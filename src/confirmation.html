@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+
+    <meta
+        http-equiv="Content-Security-Policy"
+        content="default-src 'none'; script-src 'self'; style-src 'self'; base-uri 'none'; form-action 'none'"
+    />
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    />
+
+    <title>Confirmation MCVault</title>
+
+    <link
+        rel="stylesheet"
+        href="confirmation.css"
+    />
+
+    <script
+        src="confirmation.js"
+        defer
+    ></script>
+</head>
+
+<body>
+    <main
+        class="confirmation"
+        aria-labelledby="confirmation-message"
+        aria-describedby="confirmation-detail"
+    >
+        <header class="confirmation-header">
+            <p
+                id="confirmation-title"
+                class="confirmation-eyebrow"
+            >
+                CONFIRMATION
+            </p>
+
+            <button
+                id="confirmation-close"
+                class="confirmation-close"
+                type="button"
+                aria-label="Annuler et fermer"
+            ></button>
+        </header>
+
+        <section class="confirmation-body">
+            <h1 id="confirmation-message"></h1>
+
+            <p id="confirmation-detail"></p>
+        </section>
+
+        <footer class="confirmation-actions">
+            <button
+                id="confirmation-cancel"
+                class="confirmation-button cancel-button"
+                type="button"
+                autofocus
+            >
+                Annuler
+            </button>
+
+            <button
+                id="confirmation-accept"
+                class="confirmation-button accept-button"
+                type="button"
+            >
+                Confirmer
+            </button>
+        </footer>
+    </main>
+</body>
+</html>

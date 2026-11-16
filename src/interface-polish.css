@@ -1,0 +1,413 @@
+/* MCVault — Finitions de l’interface */
+
+/* Fiches */
+
+.modpack-dialog,
+.backup-dialog {
+    width: min(800px, calc(100vw - 48px));
+    scrollbar-gutter: stable;
+}
+
+.modpack-dialog .import-dialog-heading > div,
+.backup-dialog .import-dialog-heading > div {
+    min-width: 0;
+}
+
+.modpack-dialog h2,
+.backup-dialog h2 {
+    font-size: clamp(24px, 3vw, 32px);
+    line-height: 1.25;
+    letter-spacing: -0.8px;
+    overflow-wrap: anywhere;
+}
+
+.modpack-dialog .close-dialog-button,
+.backup-dialog .close-dialog-button {
+    width: 40px;
+    height: 40px;
+}
+
+.modpack-dialog .form-field label,
+.backup-dialog .form-field label {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.modpack-dialog .modpack-help,
+.backup-dialog .modpack-help {
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.modpack-dialog input,
+.modpack-dialog select,
+.backup-dialog input,
+.backup-dialog select {
+    min-height: 46px;
+}
+
+/* Résumé du modpack */
+
+.modpack-summary {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.modpack-summary > div {
+    min-width: 0;
+    padding: 17px;
+}
+
+.modpack-summary > div:last-child {
+    grid-column: auto;
+}
+
+.modpack-summary strong {
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+/* Statut du modpack : occupe toute la largeur si seul dans sa ligne */
+
+#modpack-form > .form-grid > .form-field:only-child {
+    grid-column: 1 / -1;
+}
+
+/* Liste des sauvegardes du modpack */
+
+.modpack-backup-row {
+    align-items: flex-start;
+    gap: 18px;
+    padding: 17px;
+}
+
+.modpack-backup-row > div:first-child {
+    flex: 1;
+}
+
+.modpack-backup-row h4 {
+    line-height: 1.5;
+}
+
+.modpack-backup-row p {
+    line-height: 1.8;
+}
+
+.modpack-backup-actions {
+    justify-content: flex-end;
+    max-width: 280px;
+}
+
+.modpack-backup-actions .compact-button {
+    min-height: 36px;
+    padding: 8px 12px;
+    white-space: normal;
+}
+
+/* Fiche sauvegarde */
+
+.backup-parent-row {
+    padding: 15px 17px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: rgba(98, 216, 239, 0.04);
+}
+
+.backup-parent-row p {
+    flex: 1;
+    min-width: 0;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.backup-parent-row .compact-button {
+    min-height: 36px;
+    padding: 8px 12px;
+}
+
+.backup-detail-summary {
+    padding: 18px;
+    gap: 14px 24px;
+    line-height: 1.7;
+}
+
+.backup-detail-summary dd {
+    font-weight: 600;
+}
+
+.backup-detail-fields .selected-storage-path {
+    max-height: 130px;
+    overflow-y: auto;
+}
+
+/* Séparer les actions courantes de l’action destructive */
+
+.backup-detail-actions {
+    grid-template-columns: 1fr;
+    gap: 14px;
+}
+
+.backup-detail-actions > button {
+    min-height: 46px;
+}
+
+#backup-detail-trash-button {
+    justify-self: end;
+    width: auto;
+    min-width: 190px;
+    margin-top: 4px;
+    font-size: 12px;
+}
+
+/* Boutons des cartes de la bibliothèque */
+
+.backup-card {
+    transition: border-color 150ms ease;
+}
+
+.backup-card:hover {
+    border-color: var(--border-hover);
+}
+
+.backup-card .backup-profile-button {
+    min-height: 44px;
+    border-color: rgba(98, 216, 239, 0.5);
+    background: rgba(98, 216, 239, 0.08);
+}
+
+.backup-card .backup-open-button {
+    min-height: 40px;
+    background: transparent;
+    color: var(--text-secondary);
+}
+
+.backup-card .backup-open-button:hover:not(:disabled) {
+    color: var(--accent);
+}
+
+.backup-status,
+.backup-type {
+    font-size: 11px;
+    padding: 5px 9px;
+}
+
+/* Focus clavier */
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+    cursor: not-allowed;
+}
+
+/* Petites fenêtres */
+
+@media (max-width: 700px) {
+    .modpack-dialog,
+    .backup-dialog {
+        width: calc(100vw - 24px);
+        max-height: calc(100vh - 24px);
+        padding: 22px;
+    }
+
+    .modpack-summary,
+    .modpack-dialog .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modpack-backup-row {
+        flex-direction: column;
+    }
+
+    .modpack-backup-actions {
+        justify-content: flex-start;
+        max-width: none;
+        width: 100%;
+    }
+
+    .modpack-backup-actions .compact-button {
+        flex: 1;
+    }
+
+    .backup-parent-row {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .backup-detail-summary {
+        grid-template-columns: 1fr;
+        gap: 5px;
+    }
+
+    .backup-detail-summary dd {
+        margin-bottom: 12px;
+        text-align: left;
+    }
+
+    .backup-detail-summary dd:last-child {
+        margin-bottom: 0;
+    }
+
+    #backup-detail-trash-button {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+/* Respect des préférences de réduction des animations */
+
+@media (prefers-reduced-motion: reduce) {
+    .backup-card {
+        transition: none;
+    }
+
+    .activity-dot {
+        animation: none;
+    }
+}
+
+/* Croix de fermeture centrées, indépendantes de la police */
+
+.close-dialog-button {
+    position: relative;
+    font-size: 0;
+}
+
+.close-dialog-button::before,
+.close-dialog-button::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    pointer-events: none;
+}
+
+.close-dialog-button::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.close-dialog-button::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* Espacement entre le message et le résumé du modpack */
+
+#modpack-feedback {
+    min-height: 0;
+    margin: 16px 0;
+}
+
+.modpack-summary {
+    margin-top: 0;
+}
+
+/* Lisibilité des informations secondaires dans les fiches */
+
+.modpack-summary span,
+.backup-detail-summary dt,
+.modpack-dialog .modpack-help,
+.backup-dialog .modpack-help {
+    color: var(--text-secondary);
+}
+
+#modpack-feedback,
+#backup-detail-feedback {
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+/* Garder la barre de défilement dans le contour des fenêtres */
+
+.storage-dialog {
+    clip-path: inset(0 round 24px);
+}
+
+/* Éloigner le curseur des coins arrondis */
+
+.storage-dialog::-webkit-scrollbar-track {
+    margin-block: 20px;
+}
+
+/* Paramètres — espacement des actions de stockage */
+
+#choose-settings-storage-button {
+    min-height: 46px;
+}
+
+#apply-settings-storage-button {
+    min-height: 46px;
+    margin-top: 12px;
+}
+
+/* Paramètres — état désactivé de la confirmation du stockage */
+
+#apply-settings-storage-button:disabled {
+    opacity: 1;
+    border-color: var(--border);
+    background: rgba(160, 181, 200, 0.06);
+    color: var(--text-muted);
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Paramètres — harmonisation avec les fiches */
+
+.settings-dialog {
+    scrollbar-gutter: stable;
+}
+
+.settings-dialog h2 {
+    font-size: clamp(26px, 3vw, 32px);
+    line-height: 1.25;
+    letter-spacing: -0.8px;
+}
+
+.settings-section {
+    padding: 20px;
+}
+
+.settings-section .setup-folder-help {
+    color: var(--text-secondary);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.settings-grid {
+    gap: 16px;
+}
+
+.settings-grid input {
+    min-height: 46px;
+}
+
+#settings-feedback {
+    min-height: 0;
+    margin: 18px 0 0;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+@media (max-width: 700px) {
+    .settings-dialog {
+        width: calc(100vw - 24px);
+        max-height: calc(100vh - 24px);
+        padding: 22px;
+    }
+
+    .settings-grid {
+        grid-template-columns: 1fr;
+    }
+}

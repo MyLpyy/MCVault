@@ -1,0 +1,27 @@
+# Dépendances Node.js
+node_modules/
+
+# Fichiers de build Electron
+dist/
+out/
+release/
+build/
+
+# Données locales et sauvegardes
+data/
+backups/
+screenshots/
+*.zip
+*.rar
+*.7z
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Variables d'environnement
+.env
+.env.*
+
+# fichiers temp
+temp.js

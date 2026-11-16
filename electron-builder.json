@@ -1,0 +1,28 @@
+{
+  "appId": "fr.mlp.mcvault",
+  "productName": "MCVault",
+  "directories": {
+    "output": "dist"
+  },
+  "files": [
+    "main.js",
+    "preload.js",
+    "package.json",
+    "services/**/*",
+    "src/**/*"
+  ],
+  "win": {
+    "target": [
+      "nsis"
+    ]
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": false,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "MCVault",
+    "deleteAppDataOnUninstall": false
+  }
+}

@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'" />
+
+    <title>MCVault — Bibliothèque</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="interface-polish.css" />
+</head>
+
+<body>
+
+    <div id="global-activity" class="global-activity" hidden>
+        <span class="activity-dot" aria-hidden="true"></span>
+
+        <span id="global-activity-text">
+            Opération en cours...
+        </span>
+    </div>
+
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-mark" aria-hidden="true">MV</div>
+
+                <div class="brand-copy">
+                    <span class="brand-name">MCVault</span>
+                    <span class="brand-description">Tes sauvegardes, au même endroit.</span>
+                </div>
+            </div>
+
+            <p class="navigation-label">ESPACE PERSONNEL</p>
+
+            <nav class="navigation" aria-label="Navigation principale">
+                <button class="nav-button is-active" type="button" aria-current="page">
+                    <span class="nav-symbol" aria-hidden="true">[ / ]</span>
+                    <span>Bibliothèque</span>
+                    <span id="nav-backup-count" class="nav-count">0</span>
+                </button>
+
+                <button id="open-modpacks-button" class="nav-button" type="button">
+                    <span class="nav-symbol" aria-hidden="true">[ M ]</span>
+                    <span>Modpacks</span>
+                </button>
+
+                <button id="open-history-button" class="nav-button" type="button">
+                    <span class="nav-symbol" aria-hidden="true">[ H ]</span>
+                    <span>Historique</span>
+                </button>
+
+                <button id="open-cleanup-button" class="nav-button" type="button">
+                    <span class="nav-symbol" aria-hidden="true">[ N ]</span>
+                    <span>Nettoyage</span>
+                </button>
+
+                <button id="open-settings-button" class="nav-button" type="button">
+                    <span class="nav-symbol" aria-hidden="true">[ P ]</span>
+                    <span>Paramètres</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-note">
+                <span class="status-dot" aria-hidden="true"></span>
+                <div>
+                    <span class="sidebar-note-title">Bibliothèque locale</span>
+                    <p>Tes sauvegardes restent sur ton ordinateur.</p>
+                </div>
+            </div>
+
+            <footer class="sidebar-footer">
+                <span>MCVAULT</span>
+                <span id="app-version">v0.9.0</span>
+            </footer>
+        </aside>
+
+        <main class="main-content">
+            <header class="page-header">
+                <div>
+                    <p class="eyebrow">ESPACE DE SAUVEGARDE</p>
+
+                    <h1>
+                        Tes mondes.<br />
+                        <span>Bien rangés.</span>
+                    </h1>
+
+                    <p class="page-description">
+                        Organise et retrouve tes sauvegardes de modpacks,
+                        sans toucher à ton launcher.
+                    </p>
+                </div>
+
+                <span class="version-badge">VERSION EN DÉVELOPPEMENT</span>
+            </header>
+
+            <section class="overview-grid" aria-label="État de la bibliothèque">
+                <article class="overview-card">
+                    <span class="overview-label">MODPACKS</span>
+
+                    <div class="overview-value">
+                        <span id="modpack-count">0</span>
+                        <span class="overview-detail">dans la bibliothèque</span>
+                    </div>
+                </article>
+
+                <article class="overview-card">
+                    <span class="overview-label">SAUVEGARDES</span>
+
+                    <div class="overview-value">
+                        <span id="backup-count">0</span>
+                        <span class="overview-detail">indexées</span>
+                    </div>
+                </article>
+
+                <article class="overview-card">
+                    <span class="overview-label">ESPACE INDEXÉ</span>
+
+                    <div class="overview-value">
+                        <span id="indexed-size">0 octet</span>
+                        <span class="overview-detail">taille enregistrée à l’import</span>
+                    </div>
+                </article>
+            </section>
+
+            <section class="panel import-panel" aria-labelledby="import-title">
+                <div class="section-heading">
+                    <h2 id="import-title" class="section-label">
+                        IMPORTER UNE SAUVEGARDE
+                    </h2>
+
+                    <span class="subtle-badge">Dossier ou archive ZIP</span>
+                </div>
+
+                <div class="import-content">
+                    <div class="import-copy">
+                        <h3>Un nouvel emplacement pour tes aventures.</h3>
+                        <p>
+                            Le module d’import déplacera tes sauvegardes vers
+                            ta bibliothèque MCVault.
+                        </p>
+                    </div>
+
+                    <button id="import-button" class="primary-button" type="button">
+                        <span class="button-symbol" aria-hidden="true">+</span>
+                        <span>Importer une sauvegarde</span>
+                    </button>
+                </div>
+
+                <p id="import-feedback" class="feedback" role="status">
+                    <span class="status-dot" aria-hidden="true"></span>
+                    <span>
+                        Sélectionne une sauvegarde à déplacer dans ta bibliothèque.
+                        Le déplacement sera soumis à confirmation.
+                    </span>
+                </p>
+
+                <div class="workflow" aria-label="Fonctionnement prévu">
+                    <span>Importer</span>
+                    <span class="workflow-arrow" aria-hidden="true">→</span>
+                    <span>Déplacer</span>
+                    <span class="workflow-arrow" aria-hidden="true">→</span>
+                    <span>Indexer</span>
+                    <span class="workflow-arrow" aria-hidden="true">→</span>
+                    <span>Retrouver</span>
+                </div>
+            </section>
+
+            <section class="panel library-panel" aria-labelledby="library-title">
+                <div class="panel-header">
+                    <h2 id="library-title">
+                        <span class="heading-symbol" aria-hidden="true">[ / ]</span>
+                        Bibliothèque
+                    </h2>
+
+                    <div class="library-header-actions">
+                        <span id="library-count" class="subtle-badge">
+                            Chargement...
+                        </span>
+
+                        <button id="refresh-library-button" class="compact-button" type="button">
+                            Actualiser
+                        </button>
+                    </div>
+                </div>
+
+                <div class="library-body">
+                    <div class="library-toolbar">
+                        <div class="search-field">
+                            <label class="sr-only" for="search-input">
+                                Rechercher un modpack ou une sauvegarde
+                            </label>
+
+                            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.7" aria-hidden="true">
+                                <circle cx="10.5" cy="10.5" r="6.5"></circle>
+                                <path d="m16 16 4.5 4.5"></path>
+                            </svg>
+
+                            <input id="search-input" type="search"
+                                placeholder="Rechercher un modpack ou une sauvegarde..." autocomplete="off" />
+                        </div>
+
+                        <label class="sr-only" for="status-filter">Statut</label>
+                        <select id="status-filter">
+                            <option value="all">Tous les statuts</option>
+                            <option value="in_progress">En cours</option>
+                            <option value="paused">En pause</option>
+                            <option value="completed">Terminé</option>
+                            <option value="abandoned">Abandonné</option>
+                        </select>
+
+                        <label class="sr-only" for="sort-select">Tri</label>
+                        <select id="sort-select">
+                            <option value="recent">Plus récentes</option>
+                            <option value="oldest">Plus anciennes</option>
+                            <option value="name">Nom : A à Z</option>
+                            <option value="size">Taille décroissante</option>
+                        </select>
+                    </div>
+
+                    <div class="library-filters">
+                        <label>
+                            Modpack
+                            <select id="modpack-filter">
+                                <option value="all">Tous les modpacks</option>
+                            </select>
+                        </label>
+
+                        <label>
+                            Type
+                            <select id="type-filter">
+                                <option value="all">Solo et serveur</option>
+                                <option value="solo">Solo</option>
+                                <option value="server">Serveur</option>
+                            </select>
+                        </label>
+
+                        <label>
+                            Sauvegarde à partir du
+                            <input id="date-filter" type="date" />
+                        </label>
+
+                        <label>
+                            Taille maximale en Mio
+                            <input id="size-filter" type="number" min="0" step="any" placeholder="Sans limite" />
+                        </label>
+                    </div>
+
+                    <p id="library-feedback" class="library-feedback" role="status"></p>
+
+                    <div id="backup-list" class="backup-grid"></div>
+
+                    <div id="library-empty-state" class="empty-state" hidden>
+                        <div class="empty-mark" aria-hidden="true">[ / ]</div>
+
+                        <h3 id="library-empty-title">Ta bibliothèque commence ici.</h3>
+
+                        <p id="library-empty-description">
+                            Importe une sauvegarde pour la retrouver dans cette liste.
+                        </p>
+                    </div>
+
+                    <button id="load-more-button" class="secondary-button load-more-button" type="button" hidden>
+                        Afficher davantage
+                    </button>
+                </div>
+            </section>
+
+            <details class="technical-panel">
+                <summary>
+                    <span>Informations de l’application</span>
+                    <span class="details-symbol" aria-hidden="true">+</span>
+                </summary>
+
+                <div class="technical-content">
+                    <div class="technical-row">
+                        <span>Version</span>
+                        <span id="technical-version">Chargement...</span>
+                    </div>
+
+                    <div class="technical-row">
+                        <span>État du projet</span>
+                        <span>Étape 10 Finitions et interface finale</span>
+                    </div>
+
+                    <div class="technical-row technical-row-path">
+                        <span>Dossier technique actuel</span>
+                        <code id="data-path">Chargement...</code>
+                    </div>
+
+                    <div class="technical-row technical-row-path">
+                        <span>Dossier des sauvegardes</span>
+                        <code id="storage-root">Non configuré</code>
+                    </div>
+
+                    <p>
+                        La bibliothèque, les fiches de modpacks et l’historique sont disponibles.
+                        Le nettoyage signale les doublons potentiels et les imports plus anciens,
+                        sans suppression automatique.
+                    </p>
+                </div>
+            </details>
+
+            <footer class="page-footer">
+                <span>Organiser. Classer. Retrouver.</span>
+                <span>MCVAULT / LOCAL</span>
+            </footer>
+        </main>
+    </div>
+
+    <dialog id="storage-dialog" class="storage-dialog" aria-labelledby="storage-title"
+        aria-describedby="storage-description">
+        <div class="setup-brand">
+            <div class="brand-mark" aria-hidden="true">MV</div>
+
+            <div>
+                <span class="brand-name">MCVault</span>
+                <p>Configuration initiale</p>
+            </div>
+        </div>
+
+        <p class="eyebrow">PREMIER LANCEMENT</p>
+
+        <h2 id="storage-title">
+            Tes sauvegardes.<br />
+            <span>À leur place.</span>
+        </h2>
+
+        <p id="storage-description" class="setup-description">
+            Choisis le dossier dans lequel MCVault rangera les futures sauvegardes importées.
+        </p>
+
+        <section class="setup-storage-card">
+            <h3 class="section-label">DOSSIER DE STOCKAGE</h3>
+
+            <code id="selected-storage-path" class="selected-storage-path">
+        Chargement...
+      </code>
+
+            <button id="choose-storage-button" class="secondary-button" type="button">
+                Choisir un autre dossier
+            </button>
+
+            <p class="setup-folder-help">
+                Le dossier sélectionné recevra les sous-dossiers
+                backups et screenshots.
+            </p>
+        </section>
+
+        <p id="storage-feedback" class="setup-feedback" role="status">
+            Aucun fichier existant ne sera déplacé.
+        </p>
+
+        <button id="confirm-storage-button" class="primary-button setup-confirm-button" type="button">
+            Confirmer ce dossier
+        </button>
+
+        <p class="setup-footer">
+            La configuration reste locale. Tu peux gérer le stockage dans les paramètres.
+        </p>
+    </dialog>
+
+    <dialog id="import-dialog" class="storage-dialog import-dialog" aria-labelledby="import-dialog-title">
+        <div class="import-dialog-heading">
+            <div>
+                <p class="eyebrow">PRÉPARATION DE L’IMPORT</p>
+
+                <h2 id="import-dialog-title">
+                    Une sauvegarde.<br />
+                    <span>Une place dédiée.</span>
+                </h2>
+            </div>
+
+            <button id="close-import-button" class="close-dialog-button" type="button"
+                aria-label="Fermer la préparation de l’import">
+                ×
+            </button>
+        </div>
+
+        <p class="setup-description">
+            Sélectionne une sauvegarde locale et renseigne les informations
+            qui permettront de la retrouver.
+        </p>
+
+        <section class="setup-storage-card">
+            <h3 class="section-label">SOURCE À IMPORTER</h3>
+
+            <div class="source-type-actions">
+                <button id="choose-folder-button" class="secondary-button" type="button">
+                    Choisir un dossier
+                </button>
+
+                <button id="choose-zip-button" class="secondary-button" type="button">
+                    Choisir un ZIP
+                </button>
+            </div>
+
+            <code id="import-source-path" class="selected-storage-path">
+        Aucune source sélectionnée
+      </code>
+
+            <p id="import-source-details" class="setup-folder-help">
+                Le contenu de la sauvegarde restera dans sa structure d’origine.
+                Les ZIP ne seront pas extraits.
+            </p>
+        </section>
+
+        <form id="import-form" class="import-form">
+            <div class="form-field">
+                <label for="import-modpack">Nom du modpack</label>
+
+                <input id="import-modpack" type="text" maxlength="100" placeholder="Ex. : All the Mods"
+                    autocomplete="off" list="import-modpack-options" required />
+                <datalist id="import-modpack-options"></datalist>
+
+                <p id="import-modpack-help" class="modpack-help" role="status">
+                    Sélectionne un modpack connu ou saisis un nouveau nom.
+                </p>
+            </div>
+
+            <div class="form-field">
+                <label for="import-backup-name">Nom de la sauvegarde</label>
+
+                <input id="import-backup-name" type="text" maxlength="100"
+                    placeholder="Ex. : Avant le changement de serveur" autocomplete="off" required />
+            </div>
+
+            <div class="form-field">
+                <label for="import-backup-date">Date de la sauvegarde</label>
+
+                <input id="import-backup-date" type="datetime-local" required />
+            </div>
+
+            <div class="form-grid">
+                <div class="form-field">
+                    <label for="import-play-type">Type de partie</label>
+
+                    <select id="import-play-type">
+                        <option value="solo">Solo</option>
+                        <option value="server">Serveur</option>
+                    </select>
+                </div>
+
+                <div class="form-field">
+                    <label for="import-status">Statut du modpack</label>
+
+                    <select id="import-status">
+                        <option value="in_progress">En cours</option>
+                        <option value="paused">En pause</option>
+                        <option value="completed">Terminé</option>
+                        <option value="abandoned">Abandonné</option>
+                    </select>
+                </div>
+            </div>
+
+            <section class="import-destination">
+                <h3 class="section-label">CLASSEMENT PRÉVU</h3>
+
+                <code id="import-destination-preview">
+          Sélectionne une source et renseigne le modpack.
+        </code>
+
+                <p>
+                    Aperçu indicatif. Le chemin final sera validé par
+                    le module de déplacement.
+                </p>
+            </section>
+
+            <p id="import-dialog-feedback" class="setup-feedback" role="status">
+                Le déplacement sera soumis à une confirmation avec les chemins exacts.
+            <div id="import-debug-area" class="import-debug-area" hidden>
+                <div class="import-debug-actions">
+                    <button id="toggle-import-debug-button" class="secondary-button" type="button">
+                        Détails techniques
+                    </button>
+
+                    <button id="copy-import-debug-button" class="secondary-button" type="button">
+                        Copier le diagnostic
+                    </button>
+                </div>
+
+                <pre id="import-debug-details" class="import-debug-details"></pre>
+            </div>
+            </p>
+
+            <div id="transfer-progress-area" class="transfer-progress-area" hidden>
+                <label id="transfer-progress-label" for="transfer-progress">
+                    Préparation...
+                </label>
+
+                <progress id="transfer-progress" max="100"></progress>
+            </div>
+
+            <button id="start-import-button" class="primary-button setup-confirm-button" type="submit">
+                Déplacer et importer la sauvegarde
+            </button>
+        </form>
+    </dialog>
+
+    <dialog id="modpack-dialog" class="storage-dialog modpack-dialog" aria-labelledby="modpack-dialog-title">
+        <div class="import-dialog-heading">
+            <div>
+                <p class="eyebrow">FICHE DU MODPACK</p>
+                <h2 id="modpack-dialog-title">Mes modpacks</h2>
+            </div>
+
+            <button id="close-modpack-button" class="close-dialog-button" type="button"
+                aria-label="Fermer la fiche du modpack">
+                ×
+            </button>
+        </div>
+
+        <div class="form-field modpack-selector">
+            <label for="modpack-select">Modpack à consulter</label>
+            <select id="modpack-select"></select>
+        </div>
+
+        <p id="modpack-feedback" class="setup-feedback" role="status"></p>
+
+        <div id="modpack-content" hidden>
+            <section class="modpack-summary">
+                <div>
+                    <span>Sauvegardes</span>
+                    <strong id="modpack-backup-count">0</strong>
+                </div>
+
+                <div>
+                    <span>Taille indexée</span>
+                    <strong id="modpack-total-size">0 octet</strong>
+                </div>
+
+                <div>
+                    <span>Dernière sauvegarde</span>
+                    <strong id="modpack-last-backup">—</strong>
+                </div>
+            </section>
+
+            <form id="modpack-form" class="import-form">
+                <div class="form-field">
+                    <label for="modpack-name">Nom du modpack</label>
+                    <input id="modpack-name" type="text" readonly />
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label for="modpack-status">Statut du modpack</label>
+                        <select id="modpack-status">
+                            <option value="in_progress">En cours</option>
+                            <option value="paused">En pause</option>
+                            <option value="completed">Terminé</option>
+                            <option value="abandoned">Abandonné</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label for="modpack-minecraft-version">
+                            Version de Minecraft
+                        </label>
+
+                        <input id="modpack-minecraft-version" type="text" maxlength="50" placeholder="Non renseignée" />
+                    </div>
+
+                    <div class="form-field">
+                        <label for="modpack-loader">Loader</label>
+
+                        <input id="modpack-loader" type="text" maxlength="50"
+                            placeholder="Forge, Fabric, NeoForge..." />
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label for="modpack-tags">Tags séparés par des virgules</label>
+
+                    <input id="modpack-tags" type="text" placeholder="Technique, magie, exploration..." />
+                </div>
+
+                <div class="form-field">
+                    <label for="modpack-notes">Notes personnelles</label>
+
+                    <textarea id="modpack-notes" rows="6" maxlength="20000"
+                        placeholder="Objectifs, progression, informations utiles..."></textarea>
+                </div>
+
+                <div class="form-field">
+                    <label for="modpack-links">Liens — une adresse par ligne</label>
+
+                    <textarea id="modpack-links" rows="3" placeholder="https://..."></textarea>
+                </div>
+
+                <p class="modpack-help">
+                    Ces informations restent locales. Le nom est en lecture seule :
+                    aucun dossier ne sera renommé.
+                </p>
+
+                <button id="save-modpack-button" class="primary-button setup-confirm-button" type="submit">
+                    Enregistrer la fiche
+                </button>
+            </form>
+
+            <section class="modpack-backups-section">
+                <div class="section-heading">
+                    <h3 class="section-label">SAUVEGARDES ASSOCIÉES</h3>
+
+                    <button id="open-modpack-history-button" class="compact-button" type="button">
+                        Voir l’historique
+                    </button>
+                </div>
+
+                <div id="modpack-backups-list"></div>
+            </section>
+        </div>
+    </dialog>
+
+    <dialog id="history-dialog" class="storage-dialog history-dialog" aria-labelledby="history-title">
+        <div class="import-dialog-heading">
+            <div>
+                <p class="eyebrow">HISTORIQUE DES IMPORTS</p>
+
+                <h2 id="history-title">
+                    Tes sauvegardes.<br />
+                    <span>Au fil du temps.</span>
+                </h2>
+            </div>
+
+            <button id="close-history-button" class="close-dialog-button" type="button"
+                aria-label="Fermer l’historique">
+                ×
+            </button>
+        </div>
+
+        <p class="setup-description">
+            Retrouve les sauvegardes indexées selon leur date d’import
+            dans MCVault.
+        </p>
+
+        <div class="history-toolbar">
+            <label class="form-field">
+                <span>Recherche</span>
+                <input id="history-search" type="search" placeholder="Nom de sauvegarde ou de modpack..."
+                    autocomplete="off" />
+            </label>
+
+            <label class="form-field">
+                <span>Modpack</span>
+                <select id="history-modpack">
+                    <option value="all">Tous les modpacks</option>
+                </select>
+            </label>
+
+            <label class="form-field">
+                <span>Format</span>
+                <select id="history-format">
+                    <option value="all">Tous les formats</option>
+                    <option value="directory">Dossier</option>
+                    <option value="zip">ZIP</option>
+                </select>
+            </label>
+
+            <label class="form-field">
+                <span>Ordre</span>
+                <select id="history-order">
+                    <option value="recent">Plus récents d’abord</option>
+                    <option value="oldest">Plus anciens d’abord</option>
+                </select>
+            </label>
+
+            <label class="form-field">
+                <span>À partir du</span>
+                <input id="history-date-from" type="date" />
+            </label>
+
+            <label class="form-field">
+                <span>Jusqu’au</span>
+                <input id="history-date-to" type="date" />
+            </label>
+        </div>
+
+        <div class="history-actions">
+            <button id="history-reset-button" class="compact-button" type="button">
+                Réinitialiser les filtres
+            </button>
+
+            <button id="history-refresh-button" class="compact-button" type="button">
+                Actualiser
+            </button>
+        </div>
+
+        <p id="history-feedback" class="library-feedback" role="status"></p>
+
+        <div id="history-timeline"></div>
+
+        <div id="history-empty" class="empty-state" hidden>
+            <div class="empty-mark" aria-hidden="true">[ H ]</div>
+            <h3>Aucun import à afficher.</h3>
+            <p id="history-empty-description">
+                Importe une sauvegarde pour commencer ton historique.
+            </p>
+        </div>
+
+        <button id="history-more-button" class="secondary-button load-more-button" type="button" hidden>
+            Afficher davantage
+        </button>
+    </dialog>
+
+    <dialog id="cleanup-dialog" class="storage-dialog cleanup-dialog" aria-labelledby="cleanup-title">
+        <div class="import-dialog-heading">
+            <div>
+                <p class="eyebrow">NETTOYAGE INTELLIGENT</p>
+
+                <h2 id="cleanup-title">
+                    Repérer.<br />
+                    <span>Sans supprimer.</span>
+                </h2>
+            </div>
+
+            <button id="close-cleanup-button" class="close-dialog-button" type="button"
+                aria-label="Fermer le nettoyage">
+                ×
+            </button>
+        </div>
+
+        <p class="setup-description">
+            Repère les sauvegardes qui pourraient être des doublons.
+            Aucun fichier ne sera supprimé ou déplacé.
+        </p>
+
+        <section class="cleanup-notice">
+            <h3>Des ressemblances, pas une preuve.</h3>
+
+            <p>
+                Les ZIP sont rapprochés selon leur taille.
+                Les dossiers sont comparés selon leur arborescence
+                et la taille de leurs fichiers.
+            </p>
+
+            <p>
+                Les contenus ne sont pas comparés.
+                Vérifie chaque sauvegarde avant toute décision.
+            </p>
+        </section>
+
+        <button id="scan-duplicates-button" class="primary-button setup-confirm-button" type="button">
+            Rechercher les doublons potentiels
+        </button>
+
+        <div id="cleanup-progress-area" class="transfer-progress-area" hidden>
+            <label for="cleanup-progress">
+                Lecture des métadonnées des sauvegardes…
+            </label>
+
+            <progress id="cleanup-progress"></progress>
+        </div>
+
+        <p id="cleanup-feedback" class="library-feedback" role="status">
+            Aucune analyse effectuée.
+        </p>
+
+        <div id="duplicate-groups"></div>
+
+        <details id="cleanup-skipped" class="technical-panel" hidden>
+            <summary>
+                <span id="cleanup-skipped-title">Sauvegardes non analysées</span>
+                <span class="details-symbol" aria-hidden="true">+</span>
+            </summary>
+
+            <div id="cleanup-skipped-list" class="technical-content"></div>
+        </details>
+        <section class="old-backups-section" aria-labelledby="old-backups-title">
+            <p class="eyebrow">ANCIENNES SAUVEGARDES</p>
+
+            <h3 id="old-backups-title" class="old-backups-title">
+                Repérer les imports plus anciens
+            </h3>
+
+            <p class="setup-description">
+                Compare les dates d’import, séparément pour chaque modpack
+                et chaque format. Une sauvegarde plus ancienne peut rester
+                importante : aucun fichier ne sera supprimé.
+            </p>
+
+            <div class="old-backups-toolbar">
+                <label class="form-field">
+                    <span>Imports récents à ne pas signaler</span>
+
+                    <input id="old-backups-keep" type="number" min="1" max="100" step="1" value="3" />
+                </label>
+
+                <label class="form-field">
+                    <span>Ancienneté minimale en jours</span>
+
+                    <input id="old-backups-age" type="number" min="0" max="36500" step="1" value="30" />
+                </label>
+            </div>
+
+            <p class="old-backups-help">
+                Ces réglages concernent seulement le signalement.
+                Ils ne définissent aucune suppression automatique.
+                Avec 0 jour, le filtre d’ancienneté est désactivé.
+            </p>
+
+            <button id="analyze-old-backups-button" class="primary-button setup-confirm-button" type="button">
+                Rechercher les anciennes sauvegardes
+            </button>
+
+            <p id="old-backups-feedback" class="library-feedback" role="status">
+                Aucune analyse effectuée.
+            </p>
+
+            <div id="old-backups-results"></div>
+
+            <button id="old-backups-more-button" class="secondary-button load-more-button" type="button" hidden>
+                Afficher davantage
+            </button>
+        </section>
+
+        <section class="trash-section" aria-labelledby="trash-section-title">
+            <p class="eyebrow">CORBEILLE MCVAULT</p>
+
+            <h3 id="trash-section-title" class="trash-section-title">
+                Gérer les sauvegardes retirées
+            </h3>
+
+            <p class="trash-description">
+                Les sauvegardes mises à la corbeille ne figurent plus dans la
+                bibliothèque. Elles restent présentes sur ton ordinateur
+                jusqu’à leur suppression définitive.
+            </p>
+
+            <div class="trash-notice">
+                <p>
+                    Vider la corbeille supprime définitivement son contenu.
+                    Cette action est soumise à confirmation et ne peut pas
+                    être annulée dans MCVault.
+                </p>
+            </div>
+
+            <div class="trash-toolbar">
+                <button id="refresh-trash-button" class="secondary-button" type="button">
+                    Actualiser la corbeille
+                </button>
+
+                <button id="empty-trash-button" class="secondary-button trash-empty-button" type="button">
+                    Vider la corbeille
+                </button>
+            </div>
+
+            <p id="trash-feedback" class="setup-feedback" role="status">
+                Chargement de la corbeille...
+            </p>
+
+            <div id="trash-list" class="trash-list" aria-label="Sauvegardes présentes dans la corbeille"></div>
+        </section>
+
+    </dialog>
+
+    <dialog id="settings-dialog" class="storage-dialog settings-dialog" aria-labelledby="settings-title">
+        <div class="import-dialog-heading">
+            <div>
+                <p class="eyebrow">PARAMÈTRES</p>
+
+                <h2 id="settings-title">
+                    Tes réglages.<br />
+                    <span>Sous contrôle.</span>
+                </h2>
+            </div>
+
+            <button id="close-settings-button" class="close-dialog-button" type="button"
+                aria-label="Fermer les paramètres">
+                ×
+            </button>
+        </div>
+
+        <p class="setup-description">
+            Configure le stockage et les réglages du nettoyage.
+            Toutes les données restent locales.
+        </p>
+
+        <section class="settings-section">
+            <h3 class="section-label">DOSSIER DE STOCKAGE</h3>
+
+            <code id="settings-storage-path" class="selected-storage-path">
+            Chargement...
+        </code>
+
+            <p class="setup-folder-help">
+                Le changement concerne les futurs imports.
+                Les sauvegardes déjà indexées ne seront pas déplacées.
+            </p>
+
+            <button id="choose-settings-storage-button" class="secondary-button" type="button">
+                Choisir un nouveau dossier
+            </button>
+
+            <button id="apply-settings-storage-button" class="primary-button setup-confirm-button" type="button"
+                disabled>
+                Utiliser ce dossier pour les futurs imports
+            </button>
+        </section>
+
+        <section class="settings-section">
+            <h3 class="section-label">NETTOYAGE INTELLIGENT</h3>
+
+            <div class="settings-grid">
+                <label class="form-field">
+                    <span>Imports récents à ne pas signaler</span>
+
+                    <input id="settings-keep-recent" type="number" min="1" max="100" step="1" />
+                </label>
+
+                <label class="form-field">
+                    <span>Ancienneté minimale en jours</span>
+
+                    <input id="settings-minimum-age" type="number" min="0" max="36500" step="1" />
+                </label>
+            </div>
+
+            <p class="setup-folder-help">
+                Ces réglages concernent uniquement le signalement.
+                Aucune sauvegarde ne sera supprimée automatiquement.
+            </p>
+
+            <button id="save-settings-button" class="primary-button setup-confirm-button" type="button">
+                Enregistrer les réglages
+            </button>
+        </section>
+
+        <p id="settings-feedback" class="setup-feedback" role="status">
+            Chargement des paramètres...
+        </p>
+    </dialog>
+
+    <dialog id="backup-dialog" class="storage-dialog backup-dialog" aria-labelledby="backup-dialog-title">
+        <div class="import-dialog-heading">
+            <div>
+                <p class="eyebrow">FICHE SAUVEGARDE</p>
+                <h2 id="backup-dialog-title">Sauvegarde</h2>
+            </div>
+
+            <button id="close-backup-button" class="close-dialog-button" type="button"
+                aria-label="Fermer la fiche sauvegarde">
+                ×
+            </button>
+        </div>
+
+        <form id="backup-detail-form">
+            <fieldset id="backup-detail-fields" class="backup-detail-fields" disabled>
+                <div class="backup-parent-row">
+                    <p id="backup-parent-name"></p>
+
+                    <button id="backup-view-modpack-button" class="compact-button" type="button">
+                        Voir le modpack
+                    </button>
+                </div>
+
+                <dl class="backup-detail-summary">
+                    <dt>Date de sauvegarde</dt>
+                    <dd id="backup-detail-saved-at"></dd>
+
+                    <dt>Date d’import</dt>
+                    <dd id="backup-detail-imported-at"></dd>
+
+                    <dt>Format</dt>
+                    <dd id="backup-detail-format"></dd>
+
+                    <dt>Taille indexée</dt>
+                    <dd id="backup-detail-size"></dd>
+                </dl>
+
+                <p class="section-label">EMPLACEMENT RÉEL</p>
+                <code id="backup-detail-path" class="selected-storage-path"></code>
+
+                <div class="form-field">
+                    <label for="backup-detail-type">
+                        Type de partie de la sauvegarde
+                    </label>
+
+                    <select id="backup-detail-type" required>
+                        <option value="" disabled>Choisir un type</option>
+                        <option value="solo">Solo</option>
+                        <option value="server">Multijoueur</option>
+                    </select>
+                </div>
+
+                <div class="form-field">
+                    <label for="backup-detail-status">
+                        Statut de cette sauvegarde
+                    </label>
+
+                    <select id="backup-detail-status">
+                        <option value="in_progress">En cours</option>
+                        <option value="paused">En pause</option>
+                        <option value="completed">Terminé</option>
+                        <option value="abandoned">Abandonné</option>
+                    </select>
+                </div>
+
+                <p class="modpack-help">
+                    Ce statut est indépendant de celui du modpack.
+                </p>
+
+                <div class="form-field">
+                    <label for="backup-detail-tags">
+                        Tags de cette sauvegarde
+                    </label>
+
+                    <input id="backup-detail-tags" type="text" placeholder="Ex. : avant mise à jour, serveur" />
+                </div>
+
+                <div class="form-field">
+                    <label for="backup-detail-notes">
+                        Notes sur cette sauvegarde
+                    </label>
+
+                    <textarea id="backup-detail-notes" maxlength="20000" rows="5"
+                        placeholder="Informations propres à cette sauvegarde..."></textarea>
+                </div>
+
+                <button id="save-backup-detail-button" class="primary-button setup-confirm-button" type="submit">
+                    Enregistrer la fiche sauvegarde
+                </button>
+
+                <div class="backup-detail-actions">
+                    <button id="backup-detail-explorer-button" class="secondary-button" type="button">
+                        Afficher l’emplacement
+                    </button>
+
+                    <button id="backup-detail-trash-button" class="secondary-button danger-button" type="button">
+                        Mettre à la corbeille
+                    </button>
+                </div>
+            </fieldset>
+        </form>
+
+        <p id="backup-detail-feedback" class="setup-feedback" role="status"></p>
+    </dialog>
+
+    <script src="renderer.js"></script>
+    <script src="import-modpack-picker.js"></script>
+    <script src="library.js"></script>
+    <script src="modpacks.js"></script>
+    <script src="backup-details.js"></script>
+    <script src="history.js"></script>
+    <script src="cleanup.js"></script>
+    <script src="trash.js"></script>
+    <script src="old-backups.js"></script>
+    <script src="settings.js"></script>
+</body>
+
+</html>

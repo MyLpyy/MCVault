@@ -1,0 +1,258 @@
+:root {
+    color-scheme: dark;
+    font-family: "Segoe UI", Arial, sans-serif;
+
+    --background: #0b1120;
+    --border: #29374f;
+    --text: #f1f5f9;
+    --secondary: #a0b5c8;
+    --accent: #62d8ef;
+    --danger: #fca5a5;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    background: var(--background);
+    color: var(--text);
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+}
+
+button {
+    font: inherit;
+    cursor: pointer;
+}
+
+.confirmation {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 28px;
+
+    overflow: hidden;
+    border: 1px solid var(--border);
+
+    background:
+        radial-gradient(
+            ellipse at top right,
+            rgba(40, 126, 151, 0.13),
+            transparent 65%
+        ),
+        var(--background);
+}
+
+/* En-tête */
+
+.confirmation-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    gap: 18px;
+}
+
+.confirmation-eyebrow {
+    min-width: 0;
+    margin: 0;
+
+    color: var(--accent);
+    font-family: Consolas, monospace;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.6;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+}
+
+/* Fermeture */
+
+.confirmation-close {
+    position: relative;
+    flex-shrink: 0;
+
+    width: 36px;
+    height: 36px;
+    padding: 0;
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: rgba(11, 17, 32, 0.3);
+    color: var(--secondary);
+}
+
+.confirmation-close::before,
+.confirmation-close::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    width: 14px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    pointer-events: none;
+}
+
+.confirmation-close::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.confirmation-close::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.confirmation-close:hover:not(:disabled) {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* Contenu */
+
+.confirmation-body {
+    flex: 1;
+    min-height: 0;
+    margin: 24px 0;
+    padding: 2px 6px 2px 0;
+    overflow-y: auto;
+}
+
+.confirmation-body h1 {
+    margin: 0;
+
+    color: var(--text);
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.65px;
+    overflow-wrap: anywhere;
+}
+
+.confirmation-body p {
+    margin: 18px 0 0;
+
+    color: var(--secondary);
+    font-size: 13px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+/* Barre d’actions */
+
+.confirmation-actions {
+    display: grid;
+    grid-template-columns: minmax(110px, 0.8fr) minmax(0, 1.2fr);
+    align-items: stretch;
+    flex-shrink: 0;
+    gap: 12px;
+
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+.confirmation-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 0;
+    min-height: 46px;
+    padding: 11px 16px;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.5;
+    text-align: center;
+
+    transition:
+        background-color 150ms ease,
+        border-color 150ms ease,
+        color 150ms ease;
+}
+
+.cancel-button {
+    background: rgba(20, 30, 47, 0.65);
+    color: var(--text);
+}
+
+.cancel-button:hover:not(:disabled) {
+    border-color: #456078;
+    background: #1a293b;
+}
+
+.accept-button {
+    border-color: rgba(248, 113, 113, 0.4);
+    background: rgba(248, 113, 113, 0.08);
+    color: var(--danger);
+}
+
+.accept-button:hover:not(:disabled) {
+    border-color: rgba(248, 113, 113, 0.7);
+    background: rgba(248, 113, 113, 0.15);
+}
+
+/* Focus visible, sans double contour extérieur */
+
+button:focus {
+    outline: none;
+}
+
+button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -4px;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Défilement de sécurité pour les textes longs */
+
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background: #304157;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .confirmation-button {
+        transition: none;
+    }
+}
+
+/* Actions non destructives : stockage et import */
+
+:root[data-tone="neutral"] .accept-button {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #08202d;
+}
+
+:root[data-tone="neutral"] .accept-button:hover:not(:disabled) {
+    border-color: #86e5f6;
+    background: #86e5f6;
+}
