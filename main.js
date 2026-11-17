@@ -479,7 +479,13 @@ async function movePathToTrash(sourcePath, trashItemPath) {
     const sourceStats = await fs.stat(sourcePath);
     const trashStats = await fs.stat(trashItemPath);
 
-    if (!sourceStats.isDirectory() || !trashStats.isDirectory()) {
+    const isDirectory =
+        sourceStats.isDirectory() && trashStats.isDirectory();
+
+    const isFile =
+        sourceStats.isFile() && trashStats.isFile();
+
+    if (!isDirectory && !isFile) {
         throw new Error(
             "La vérification du déplacement vers la corbeille a échoué."
         );

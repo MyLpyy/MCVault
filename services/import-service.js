@@ -573,6 +573,7 @@ async function executeImport(plan, notify) {
       modpackId: modpack.id,
       name: plan.metadata.backupName,
       status: "in_progress",
+      type: plan.metadata.playType,
       notes: "",
       tags: [],
       updatedAt: plan.createdAt,
@@ -664,8 +665,6 @@ async function executeImport(plan, notify) {
         await fs.unlink(plan.journalPath);
       }
     } catch (rollbackError) {
-      rollbackError = rollbackFailure;
-
       throw new Error(
         `${error.message} Retour automatique incomplet : ` +
         `${rollbackFailure.message}. Conserve les fichiers et consulte ` +

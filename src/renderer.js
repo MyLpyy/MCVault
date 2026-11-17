@@ -557,12 +557,6 @@ const globalActivityText = document.getElementById(
 );
 
 window.mcvault.onAppState((state) => {
-
-    const globalActivity = document.getElementById("global-activity");
-    const globalActivityText = document.getElementById(
-        "global-activity-text"
-    );
-
     const scanDuplicatesButton = document.getElementById(
         "scan-duplicates-button"
     );
