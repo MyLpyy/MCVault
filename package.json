@@ -1,6 +1,6 @@
 {
   "name": "mcvault",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "Gestionnaire local de sauvegardes de modpacks Minecraft",
   "main": "main.js",
   "scripts": {
